@@ -2,39 +2,47 @@
 
 public static class Levenshtein
 {
-    public static int Distance(string a, string b)
+    public static int Distance(string? a, string? b)
     {
+        if (a is null || a.Length == 0)
+        {
+            return b?.Length ?? 0;
+        }
+
+        if (b is null || b.Length == 0)
+        {
+            return a.Length;
+        }
+
         var n = a.Length;
         var m = b.Length;
-        var d = new int[n + 1, m + 1];
 
-        if (n == 0)
+        if (m > n)
         {
-            return m;
+            (a, b) = (b, a);
+            (n, m) = (m, n);
         }
 
-        if (m == 0)
-        {
-            return n;
-        }
-
-        for (var i = 0; i <= n; i++)
-            d[i, 0] = i;
+        var d = new int[m + 1];
 
         for (var j = 0; j <= m; j++)
-            d[0, j] = j;
+        {
+            d[j] = j;
+        }
 
         for (var i = 1; i <= n; i++)
         {
+            d[0] = i;
+            var prev = i - 1;
             for (var j = 1; j <= m; j++)
             {
-                var cost = (b[j - 1] == a[i - 1]) ? 0 : 1;
-                d[i, j] = Math.Min(
-                    Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1),
-                    d[i - 1, j - 1] + cost);
+                var equalCost = a[i - 1] == b[j - 1] ? 0 : 1;
+                (prev, d[j]) = (d[j], Min(prev + equalCost, d[j - 1] + 1, d[j] + 1));
             }
         }
 
-        return d[n, m];
+        return d[m];
     }
+
+    private static int Min(int a, int b, int c) => Math.Min(Math.Min(a, b), c);
 }
