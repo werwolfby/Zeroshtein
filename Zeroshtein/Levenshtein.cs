@@ -42,12 +42,11 @@ public static class Levenshtein
 
         for (var i = 0; i < a.Length; i++)
         {
-            var prev = i;
+            var cost = i;
             var left = i + 1;
             for (var j = 0; j < b.Length; j++)
             {
                 var up = d[j];
-                var cost = prev;
 
                 if (a[i] != b[j])
                 {
@@ -63,8 +62,8 @@ public static class Levenshtein
                     cost++;
                 }
 
-                prev = up;
                 left = d[j] = cost;
+                cost = up;
             }
         }
 
