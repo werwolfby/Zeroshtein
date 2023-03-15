@@ -1,48 +1,78 @@
-﻿namespace Zeroshtein;
+﻿using System.Buffers;
+
+namespace Zeroshtein;
 
 public static class Levenshtein
 {
-    public static int Distance(string? a, string? b)
+    public static int MaxStackAllocSize { get; set; } = 1024;
+
+    public static int Distance(string a, string b)
     {
-        if (a is null || a.Length == 0)
+        if (a.Length == 0)
         {
-            return b?.Length ?? 0;
+            return b.Length;
         }
 
-        if (b is null || b.Length == 0)
+        if (b.Length == 0)
         {
             return a.Length;
         }
 
-        var n = a.Length;
-        var m = b.Length;
-
-        if (m > n)
+        if (b.Length > a.Length)
         {
             (a, b) = (b, a);
-            (n, m) = (m, n);
         }
 
-        var d = new int[m + 1];
+        int[]? rentArray = null;
 
-        for (var j = 0; j <= m; j++)
+        var heapSpan = b.Length > MaxStackAllocSize;
+        if (heapSpan)
         {
-            d[j] = j;
+            rentArray = ArrayPool<int>.Shared.Rent(b.Length);
         }
 
-        for (var i = 1; i <= n; i++)
+        var d = heapSpan
+            ? rentArray.AsSpan(0, b.Length)
+            : stackalloc int[b.Length];
+
+        for (var j = 0; j < d.Length;)
         {
-            d[0] = i;
-            var prev = i - 1;
-            for (var j = 1; j <= m; j++)
+            d[j] = ++j;
+        }
+
+        for (var i = 0; i < a.Length; i++)
+        {
+            var prev = i;
+            var left = i + 1;
+            for (var j = 0; j < b.Length; j++)
             {
-                var equalCost = a[i - 1] == b[j - 1] ? 0 : 1;
-                (prev, d[j]) = (d[j], Min(prev + equalCost, d[j - 1] + 1, d[j] + 1));
+                var up = d[j];
+                var cost = prev;
+
+                if (a[i] != b[j])
+                {
+                    if (up < cost)
+                    {
+                        cost = up;
+                    }
+                    if (left < cost)
+                    {
+                        cost = left;
+                    }
+
+                    cost++;
+                }
+
+                prev = up;
+                left = d[j] = cost;
             }
         }
 
-        return d[m];
-    }
+        if (heapSpan)
+        {
+            ArrayPool<int>.Shared.Return(rentArray!);
+        }
 
-    private static int Min(int a, int b, int c) => Math.Min(Math.Min(a, b), c);
+        return d[^1];
+    }
 }
