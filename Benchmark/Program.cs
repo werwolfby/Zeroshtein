@@ -33,6 +33,18 @@ public class BenchmarkLevenstein
     }
 
     [Benchmark]
+    public void FastenshteinZeroAlloc()
+    {
+        for (var i = 0; i < words.Length; i++)
+        {
+            for (var j = 0; j < words.Length; j++)
+            {
+                ZeroAllocFastenshtein.Distance(words[i], words[j]);
+            }
+        }
+    }
+
+    [Benchmark]
     public void Zeroshtein()
     {
         for (var i = 0; i < words.Length; i++)
