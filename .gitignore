@@ -4,3 +4,4 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 /Zeroshtein.sln.DotSettings.user
+/Benchmark/BenchmarkDotNet.Artifacts/

@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeroshtein", "Zeroshtein\Ze
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeroshtein.Tests", "Zeroshtein.Tests\Zeroshtein.Tests.csproj", "{9F97AA80-B1A9-4792-8ECB-0BF30DD76125}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmark", "Benchmark\Benchmark.csproj", "{FA8409E9-B12B-49A6-BD21-16F434CA5883}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{9F97AA80-B1A9-4792-8ECB-0BF30DD76125}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F97AA80-B1A9-4792-8ECB-0BF30DD76125}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F97AA80-B1A9-4792-8ECB-0BF30DD76125}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA8409E9-B12B-49A6-BD21-16F434CA5883}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA8409E9-B12B-49A6-BD21-16F434CA5883}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA8409E9-B12B-49A6-BD21-16F434CA5883}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{FA8409E9-B12B-49A6-BD21-16F434CA5883}.Debug|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
