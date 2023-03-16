@@ -20,7 +20,9 @@ public static class Levenshtein
 
         if (b.Length > a.Length)
         {
-            (a, b) = (b, a);
+            var temp = a;
+            a = b;
+            b = temp;
         }
 
         int[]? rentArray = null;
@@ -72,6 +74,6 @@ public static class Levenshtein
             ArrayPool<int>.Shared.Return(rentArray!);
         }
 
-        return d[^1];
+        return d[d.Length - 1];
     }
 }
